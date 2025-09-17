@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>ImageViwer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>ImageViwer</h1>
+    </header>
+
+    <!-- Área de upload central -->
+    <main>
+      <div class="upload-box">
+        <img src="imagens/layout.png" alt="layout" class="layout-preview">
+
+        <form id="uploadForm" enctype="multipart/form-data">
+          <label for="photo" class="custom-file">
+            📷 Escolher Imagem
+          </label>
+          <input type="file" name="photo" id="photo" accept="image/*" required hidden>
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+
+      <!-- Status e preview -->
+      <div id="status"></div>
+      <div id="preview"></div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
