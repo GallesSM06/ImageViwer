@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+ini_set('display_errors', 1); // Habilita a exibição de erros de execução no PHP
+ini_set('display_startup_errors', 1); // Exibe erros durante a fase de inicialização do PHP
+error_reporting(E_ALL); // Define o nível de erro a ser exibido como "todos os erros" (warnings, notices, erros fatais)
 
 header('Content-Type: application/json');
 
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
         'image/png'  => 'png',
         'image/gif'  => 'gif',
         'image/webp' => 'webp'
-    ];
+    ]; // somente aceitará esses formatos de imagens
 
     if (!array_key_exists($mime, $allowed)) {
         echo json_encode(["success" => false, "error" => "Tipo não permitido"]);
@@ -61,17 +61,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
     if (move_uploaded_file($file['tmp_name'], $dest)) {
         $url = "uploads/" . $uniqueName;
 
-        $stmt = $conn->prepare("
+        $inserirImagemStatement = $conn->prepare("
             INSERT INTO uploads (original_name, saved_name, file_type, file_size, url, created_at)
             VALUES (?, ?, ?, ?, ?, NOW())
         ");
-        $stmt->bind_param("sssds", $file['name'], $uniqueName, $mime, $file['size'], $url);
-        $stmt->execute();
+        $inserirImagemStatement->bind_param("sssds", $file['name'], $uniqueName, $mime, $file['size'], $url);
+        $inserirImagemStatement->execute();
 
         echo json_encode([
             "success" => true,
             "url" => $url,
-            "id" => $stmt->insert_id
+            "id" => $inserirImagemStatement->insert_id
         ]);
     } else {
         echo json_encode(["success" => false, "error" => "Falha ao mover o arquivo"]);
